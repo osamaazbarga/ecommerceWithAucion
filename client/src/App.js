@@ -12,6 +12,7 @@ import Header from './components/nav/Header';
 import RegisterComplete from './pages/auth/RegisterComplete';
 import {auth} from './firbase'
 import {useDispatch} from 'react-redux'
+import { ForgetPassword } from './pages/auth/ForgetPassword';
 
 
 
@@ -26,7 +27,7 @@ function App() {
         dispatch({
           type:'LOGGED_IN_USER',
           payload:{
-            name:user.email,
+            email:user.email,
             token:idTokenResult.token,
           }
         })
@@ -45,6 +46,8 @@ function App() {
         <Route exact path="/login" component={Login}/>
         <Route exact path="/register" component={Register}/>
         <Route exact path="/register/complete" component={RegisterComplete}/>
+        <Route exact path="/forget/password" component={ForgetPassword}/>
+
 
       </Switch>
     </div>
