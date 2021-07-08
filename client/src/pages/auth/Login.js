@@ -1,48 +1,68 @@
-import React, { useState,useEffect } from 'react'
-import { auth,googleAuthProvider } from '../../firbase'
-import { toast } from 'react-toastify'
-import { Button } from 'antd'
-import { MailOutlined,GoogleOutlined } from '@ant-design/icons';
-import { useDispatch,useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { auth, googleAuthProvider } from "../../firbase";
+import { toast } from "react-toastify";
+import { Button } from "antd";
+import { MailOutlined, GoogleOutlined } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { createOrUpdateUser } from "../../function/auth";
 
-
-
-const Login = ({history}) => {
+const Login = ({ history }) => {
     const [email, setEmail] = useState('o.s.2@hotmail.com')
     const [password, setPassword] = useState('315454199')
     const [loading, setLoading] = useState(false)
 
-    const {user}=useSelector((state)=>({...state}))
-    useEffect(()=>{
-        if(user && user.token){
+    const { user } = useSelector((state) => ({ ...state }))
+    useEffect(() => {
+        if (user && user.token) {
             history.push('/')
         }
-    },[user])
+    }, [user,history])
 
 
-    let dispatch=useDispatch()
+    let dispatch = useDispatch()
+
+    const roleBasedRedirect=(res)=>{
+        if(res.data.role==='admin'){
+            history.push("/admin/dashboard")
+        }
+        else{
+            history.push("/user/history")
+        }
+    }
 
 
     const handleSubmit = async (e) => {
         console.log(e);
         e.preventDefault();
         setLoading(true)
-        console.log(email,password);
+        console.log(email, password);
         try {
-            const result=await auth.signInWithEmailAndPassword(email,password)
+            const result = await auth.signInWithEmailAndPassword(email, password)
             // console.log(result);
-            const {user}=result
-            const idTokenResult=await user.getIdTokenResult()
-            dispatch({
-                type:'LOGGED_IN_USER',
-                payload:{
-                  name:user.email,
-                  token:idTokenResult.token,
-                }
-            })
+            const { user } = result
+            const idTokenResult = await user.getIdTokenResult()
 
-            history.push('/')
+            await createOrUpdateUser(idTokenResult.token)
+                .then((res) => {
+                    dispatch({
+                        type: "LOGGED_IN_USER",
+                        payload: {
+                            name: res.data.name,
+                            email: res.data.email,
+                            token: idTokenResult.token,
+                            role: res.data.role,
+                            _id: res.data._id,
+                        },
+                    });
+                    roleBasedRedirect(res)
+                })
+                .catch(err=>console.log(err));
+
+
+
+            // history.push('/')
+            
         } catch (error) {
             console.log(error);
             toast.error(error.message)
@@ -77,34 +97,42 @@ const Login = ({history}) => {
 
 
                 <br />
-                <Button 
-                    type="primary" 
-                    onClick={handleSubmit} 
-                    className="mb-3" 
+                <Button
+                    type="primary"
+                    onClick={handleSubmit}
+                    className="mb-3"
                     block
                     shape="round"
-                    icon={<MailOutlined/>}
+                    icon={<MailOutlined />}
                     size="large"
-                    disabled={!email||password.length<8}
-                     >Login with Email
+                    disabled={!email || password.length < 8}
+                >Login with Email
                 </Button>
             </form>
         )
     }
 
-    const googleLogin=async()=>{
-        auth.signInWithPopup(googleAuthProvider).then(async(result)=>{
-            const {user}=result
-            const idTokenResult=await user.getIdTokenResult()
-            dispatch({
-                type:'LOGGED_IN_USER',
-                payload:{
-                  name:user.email,
-                  token:idTokenResult.token,
-                }
-            })
-            history.push('/')
-        }).catch(err=>{
+    const googleLogin = async () => {
+        auth.signInWithPopup(googleAuthProvider).then(async (result) => {
+            const { user } = result
+            const idTokenResult = await user.getIdTokenResult()
+            await createOrUpdateUser(idTokenResult.token)
+                .then((res) => {
+                    dispatch({
+                        type: "LOGGED_IN_USER",
+                        payload: {
+                            name: res.data.name,
+                            email: res.data.email,
+                            token: idTokenResult.token,
+                            role: res.data.role,
+                            _id: res.data._id,
+                        },
+                    });
+                    roleBasedRedirect(res)
+                })
+                .catch(err=>console.log(err));
+            // history.push('/')
+        }).catch(err => {
             console.log(err)
             toast.error(err.message)
         });
@@ -113,18 +141,18 @@ const Login = ({history}) => {
         <div className="container p-5">
             <div className="row">
                 <div className="col-md-6 offset-md-3">
-                    {loading?<h4>Login</h4>:<h4 className="text-danger">Loading...</h4>}
+                    {loading ? <h4>Login</h4> : <h4 className="text-danger">Loading...</h4>}
                     {/* <ToastContainer/> */}
                     {loginForm()}
-                    <Button 
-                        type="danger" 
-                        onClick={googleLogin} 
-                        className="mb-3" 
+                    <Button
+                        type="danger"
+                        onClick={googleLogin}
+                        className="mb-3"
                         block
                         shape="round"
-                        icon={<GoogleOutlined/>}
+                        icon={<GoogleOutlined />}
                         size="large"
-                        >Login with Google
+                    >Login with Google
                     </Button>
                     <Link to="/forget/password" className="float-right text-danger">Forget Password?</Link>
                 </div>

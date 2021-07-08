@@ -6,10 +6,13 @@ const router=express.Router()
 //middlewares
 const {authCheck,adminCheck}=require('../middleware/auth')
 //controller
-const {createOrUpdateUser,currentUser}=require('../controllers/auth')
-router.post('/createorupdateuser',authCheck, createOrUpdateUser)
-router.post('/currentuser',authCheck, currentUser)
-router.post('/currentadmin',authCheck,adminCheck, currentUser)
+const {create,read,update,remove,list}=require('../controllers/category.controller')
+router.post('/category',authCheck, adminCheck,create)
+router.get('/category',list)
+router.get('/category/:slug',read)
+router.put('/category/:slug',authCheck, adminCheck,update)
+router.delete('/category/:slug',authCheck, adminCheck,remove)
+
 
     
 // })

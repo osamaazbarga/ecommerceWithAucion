@@ -1,17 +1,21 @@
 import React,{useState,useEffect} from 'react'
 import {auth} from '../../firbase'
 import { toast} from 'react-toastify'
-
+import { useDispatch } from "react-redux";
+import { createOrUpdateUser } from "../../function/auth";
 
 
 const RegisterComplete = ({history}) => {
     const [email,setEmail]=useState('')
     const [password,setPassword]=useState('')
     // const [email,setEmail]=useState('')
+    // const { user } = useSelector((state) => ({ ...state }))
+    let dispatch = useDispatch()
 
     useEffect(()=>{
         setEmail(window.localStorage.getItem("emailForRegistration"))
-    },[])
+    },[history])
+    
 
     //props history
     // history.push('/')
@@ -33,9 +37,23 @@ const RegisterComplete = ({history}) => {
                 //get user id token
                 let user =auth.currentUser
                 await user.updatePassword(password)
-                const idTokenResulr=await user.getIdTokenResult()
+                const idTokenResult=await user.getIdTokenResult()
                 //redux store
-                console.log('user',user,'idtokenresult',idTokenResulr);
+                console.log('user',user,'idtokenresult',idTokenResult);
+                await createOrUpdateUser(idTokenResult.token)
+                .then((res) => {
+                    dispatch({
+                        type: "LOGGED_IN_USER",
+                        payload: {
+                            name: res.data.name,
+                            email: res.data.email,
+                            token: idTokenResult.token,
+                            role: res.data.role,
+                            _id: res.data._id,
+                        },
+                    });
+                })
+                .catch(err=>console.log(err));
                 //redirect
                 history.push('/')
             }
@@ -63,7 +81,7 @@ const RegisterComplete = ({history}) => {
                     placeholder="password"
                     autoFocus
                 />
-                <button type="submit" className="btn btn-raised">complete register</button>
+                <button type="submit" className="btn btn-raised" disabled={!password||password.length<8}>complete register</button>
             </form>
         )
     }
