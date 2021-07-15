@@ -3,6 +3,7 @@ const User = require('../models/user.model')
 
 
 exports.createOrUpdateUser = async (req, res) => {
+  console.log('createOrUpdateUser');
   const { email } = req.user
   console.log(req.user);
   const user = await User.findOneAndUpdate(

@@ -8,3 +8,11 @@ export async function createProduct(product,authtoken) {
     })
     return req
 }
+
+
+export async function getProductsByCount(count) {
+    console.log("req");
+    const req = await Api.get(`/products/${count}`)
+    console.log("req");
+    return req
+}

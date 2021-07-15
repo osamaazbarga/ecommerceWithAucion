@@ -9,7 +9,6 @@ export async function getCategories() {
 
 export async function getCategory(slug) {
     const req = await Api.get(`/category/${slug}`)
-    console.log(req);
     return req
 }
 
@@ -39,4 +38,10 @@ export async function createCategory(category,authtoken) {
     })
     return req
 }
+
+export async function getSubsCategory(_id) {
+    const req = await Api.get(`/category/subs/${_id}`)
+    return req
+}
+
 

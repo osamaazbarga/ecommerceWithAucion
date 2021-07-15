@@ -3,7 +3,8 @@ import AdminNav from '../../components/nav/AdminNav'
 import {toast} from 'react-toastify'
 import {useSelector} from 'react-redux'
 import {createProduct} from '../../function/product'
-
+import ProductCreateForm from '../../components/forms/ProductCreateForm'
+import {getCategories,getSubsCategory} from '../../function/category'
 
 const initialState=(
     {
@@ -25,26 +26,23 @@ const initialState=(
 
 const ProductCreate = () => {
     const [values,setValues]=useState(initialState)
+    const [subOptions,setSubOptions]=useState([])
+    const [showSub,setShowSub]=useState(false)
+
 
     //redux
     const {user}= useSelector(state => ({...state}))
 
 
-    //destructure
-    const{
-        title,
-        description,
-        price,
-        category,
-        categories,
-        subs,
-        quantity,
-        images,
-        colors,
-        color,
-        brand,
-        shipping
-    }=values
+    
+    useEffect(() => {
+        loadCategories()
+    }, [])
+
+    const loadCategories=()=>{
+        getCategories()
+        .then(c=>setValues({...values,categories:c.data}))
+    }
 
     const handleSubmit=(e)=>{
         e.preventDefault()
@@ -56,16 +54,29 @@ const ProductCreate = () => {
         })
         .catch(err=>{
             console.log(err);
-            if(err.response.status===400) {
+            // if(err.response.status===400) {
                     
-                toast.error(err.response.data)
-            }
+            //     toast.error(err.response.data)
+            // }
+            toast.error(err.response.data.err)
         })
     }
 
     const handleChange=(e)=>{
         setValues({...values,[e.target.name]:e.target.value})
         console.log(e.target.name,'-------',e.target.value);
+    }
+
+    const handleCategoryChange=(e)=>{
+        e.preventDefault()
+        console.log('Clicked category',e.target.value);
+        setValues({...values,subs:[],category:e.target.value})
+        getSubsCategory(e.target.value)
+        .then(res=>{
+            console.log('subs options on category click',res);
+            setSubOptions(res.data)
+        })
+        setShowSub(true)
     }
 
     return (
@@ -76,92 +87,19 @@ const ProductCreate = () => {
                     <h4>Create Product</h4>
                     <hr/>
 
-                    <form onSubmit={handleSubmit}>
-                        <div className="form-group">
-                            <label>Title</label>
-                            <input 
-                                type="text" 
-                                name="title" 
-                                className="form-control" 
-                                value={title} 
-                                onChange={handleChange}/>
-                        </div>
+                    {JSON.stringify(values.images)}
+                    <ProductCreateForm 
+                        handleSubmit={handleSubmit} 
+                        handleChange={handleChange} 
+                        setValues={setValues}
+                        values={values}
+                        handleCategoryChange={handleCategoryChange}
+                        subOptions={subOptions}
+                        showSub={showSub}
+                        />
 
-                        <div className="form-group">
-                            <label>Description</label>
-                            <input 
-                                type="text" 
-                                name="description" 
-                                className="form-control" 
-                                value={description} 
-                                onChange={handleChange}/>
-                        </div>
-
-                        <div className="form-group">
-                            <label>Price</label>
-                            <input 
-                                type="number" 
-                                name="price" 
-                                className="form-control" 
-                                value={price} 
-                                onChange={handleChange}/>
-                        </div>
-
-                        <div className="form-group">
-                            <label>Shipping</label>
-                            <select name="shipping" className="form-control" onChange={handleChange}>
-                                <option value="No">No</option>
-                                <option value="Yes">Yes</option>
-                            </select>
-                        </div>
-
-                        <div className="form-group">
-                            <label>Quantity</label>
-                            <input 
-                                type="number" 
-                                name="quantity" 
-                                className="form-control" 
-                                value={quantity} 
-                                onChange={handleChange}/>
-                        </div>
-
-                        <div className="form-group">
-                            <label>Color</label>
-                            <select name="color" className="form-control" onChange={handleChange}>
-                                <option>Please Select</option>
-                                {colors.map(c=><option key={c} value={c}>{c}</option>)}
-                                
-                            </select>
-                        </div>
-
-                        <div className="form-group">
-                            <label>Brand</label>
-                            <input 
-                                type="text" 
-                                name="brand" 
-                                className="form-control" 
-                                value={brand} 
-                                onChange={handleChange}/>
-                        </div>
-
-                        <button className="btn btn-outline-info">Save</button>
-                    </form>
-                    {/* {<CategoryForm handleSubmit={handleSubmit} name={name} setName={setName}/>} */}
-                    {/* step2 and step3 */}
-                    {/* <LocalSearch keyword={keyword} setKeyword={setKeyword}/> */}
                     
-                    {/* {loading?<h5 className="text-danger">Loading...</h5>:<h5>&nbsp;</h5>} */}
-                    {/* step5 */}
-                    {/* {categories.filter(searched(keyword)).map((c)=>{
-                        return(
-                            <div className="alert alert-secondary" key={c._id}>
-                                {c.name} <span onClick={()=>handleRemove(c.slug)} className="btn btn-sm float-right"><DeleteOutlined className="text-danger"/></span> 
-                                 <Link to={`/admin/category/${c.slug}`}>
-                                     <span className="btn btn-sm float-right"><EditOutlined className="text-primary"/></span>
-                                </Link>
-                            </div>
-                        )
-                    })} */}
+                   
                 </div>
             </div>
         </div>
