@@ -26,3 +26,8 @@ export async function removeProduct(slug,authtoken) {
     return req
     
 }
+
+export async function getProduct(slug) {
+    const req = await Api.get(`/product/${slug}`)
+    return req
+}

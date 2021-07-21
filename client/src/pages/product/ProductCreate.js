@@ -96,7 +96,7 @@ const ProductCreate = () => {
                         handleCategoryChange={handleCategoryChange}
                         subOptions={subOptions}
                         showSub={showSub}
-                        />
+                    />
 
                     
                    
