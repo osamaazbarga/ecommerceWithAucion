@@ -27,6 +27,7 @@ import SubUpdate from './pages/admin/subCategory/SubUpdate';
 import ProductCreate from './pages/product/ProductCreate';
 import AllProducts from './pages/product/AllProducts';
 import ProductUpdate from './pages/product/ProductUpdate';
+import ProductView from './pages/ProductView';
 
 
 
@@ -80,6 +81,8 @@ function App() {
         <AdminRoute exact path="/admin/products" component={AllProducts}/>
         <AdminRoute exact path="/admin/product/:slug" component={ProductUpdate}/>
 
+
+        <Route exact path="/product/:slug" component={ProductView}/>
 
 
 

@@ -2,7 +2,7 @@ import React,{useEffect,useState} from 'react'
 import AdminNav from '../../components/nav/AdminNav'
 import {toast} from 'react-toastify'
 import {useSelector} from 'react-redux'
-import {getProduct} from '../../function/product'
+import {getProduct,updateProduct} from '../../function/product'
 import ProductCreateForm from '../../components/forms/ProductCreateForm'
 import {getCategories,getSubsCategory} from '../../function/category'
 import ProductUpdateForm from '../../components/forms/ProductUpdateFrom'
@@ -23,14 +23,19 @@ const initialState={
     }
 
 
-const ProductUpdate = ({ match }) => {
+const ProductUpdate = ({history, match }) => {
     // state
     const [values, setValues] = useState(initialState);
     const [subOptions,setSubOptions]=useState([])
     const [showSub,setShowSub]=useState(false)
     const [categories,setCategories]=useState([])
     const [arrayOfSubs,setArrayOfSubs]=useState([])
+    const [selectedCategory,setSelectedCategory]=useState("")
+    const [loading,setLoading]=useState(false)
 
+
+
+    setSelectedCategory
 
     const { user } = useSelector((state) => ({ ...state }));
     // router
@@ -66,13 +71,25 @@ const ProductUpdate = ({ match }) => {
     const handleCategoryChange=(e)=>{
         e.preventDefault()
         console.log('Clicked category',e.target.value);
-        setValues({...values,subs:[],category:e.target.value})
+        setValues({...values,subs:[]})
+
+        setSelectedCategory(e.target.value)
+
         getSubsCategory(e.target.value)
         .then(res=>{
             console.log('subs options on category click',res);
             setSubOptions(res.data)
         })
-        setShowSub(true)
+        console.log('Existing category values.category',values.category);
+
+        // setShowSub(true)
+        //if user clicks back to original category
+        //show its sub categories in default
+        if(values.category._id===e.target.value){
+          loadProduct();
+        }
+        //clear old sub categories ids
+        setArrayOfSubs([]);
     }
 
     const loadCategories=()=>{
@@ -87,6 +104,21 @@ const ProductUpdate = ({ match }) => {
     const handleSubmit = (e) => {
       e.preventDefault();
       //
+      setLoading(true)
+      values.subs=arrayOfSubs
+      values.category=selectedCategory?selectedCategory:values.category
+      updateProduct(slug,values,user.token)
+      .then((res)=>{
+        setLoading(false)
+        toast.success(`${res.data.title} is updated`)
+        history.push("/admin/products")
+
+      })
+      .catch((err)=>{
+        console.log(err);
+        setLoading(false)
+        toast.error(err.response.data.err)
+      })
     };
   
     const handleChange = (e) => {
@@ -116,6 +148,7 @@ const ProductUpdate = ({ match }) => {
               categories={categories}
               arrayOfSubs={arrayOfSubs}
               setArrayOfSubs={setArrayOfSubs}
+              selectedCategory={selectedCategory}
             />
             <hr />
           </div>

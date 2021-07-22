@@ -31,3 +31,17 @@ export async function getProduct(slug) {
     const req = await Api.get(`/product/${slug}`)
     return req
 }
+
+export async function updateProduct(slug,product,authtoken) {
+    const req = await Api.put(`/product/${slug}`,product,{
+        headers:{
+            authtoken
+        }
+    })
+    return req
+}
+
+export async function getProducts(sort,order,limit) {
+    const req = await Api.post(`/products`,{sort,order,limit})
+    return req
+}
