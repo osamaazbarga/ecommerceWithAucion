@@ -1,14 +1,16 @@
 import React from 'react'
-import { Card } from 'antd'
+import { Card, Tabs } from 'antd'
 import { Link } from 'react-router-dom'
 import { HeartOutlined, ShoppingCartOutlined } from '@ant-design/icons'
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import defaultImageProduct from '../../images/defaultimageproduct.png'
-const { Meta } = Card;
+import ProductListItems from './ProductListItems';
+
+const { TabPane } = Tabs
 
 const SingleProduct = ({ product }) => {
-    const { title, images, slug } = product
+    const { title, images, slug, description } = product
     return (
         <div className="row pt-4">
             <div className="col-md-7">
@@ -39,21 +41,28 @@ const SingleProduct = ({ product }) => {
             </div>
 
             <div className="col-md-5">
-            <h1 className="bg-info p-3">{title}</h1>
+                <h1 className="bg-info p-3">{title}</h1>
                 <Card
                     actions={[
                         <div>
-                            <ShoppingCartOutlined className="text-success" />Add to Cart
+                            <ShoppingCartOutlined className="text-success" /><br />Add to Cart
                         </div>,
                         <Link to={`/product/${slug}`}><HeartOutlined className="text-info" /><br /> Add to Wishlist</Link>
                     ]}
                 >
                     {/* <Meta title={title} description={description} /> */}
-                    <p>
-                        price/category/subs/shipping/
-                    </p>
+                    <ProductListItems product={product} />
                 </Card>
             </div>
+
+            <div className="card-container">
+            <Tabs type="card">
+                <TabPane tab="Description" key="1">{description && description}</TabPane>
+                <TabPane tab="More" key="2">Call use On Number</TabPane>
+
+            </Tabs>
+            </div>
+            
         </div>
     )
 }

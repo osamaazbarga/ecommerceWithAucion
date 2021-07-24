@@ -3,6 +3,7 @@ import SingleProduct from '../components/cards/SingleProduct'
 import {getProduct} from '../function/product'
 
 
+
 const ProductView = ({match}) => {
     const [product,setProduct]=useState({})
     const {slug}=match.params
@@ -20,7 +21,7 @@ const ProductView = ({match}) => {
 
             <SingleProduct product={product}/>
             <div className="row">
-                <div>Reload Products</div>
+                <div className="col text-center pt-5 pb-5"><hr/><h4>Reload Products</h4><hr/></div>
             </div>
         </div>
     )
