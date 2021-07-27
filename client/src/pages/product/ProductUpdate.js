@@ -35,7 +35,6 @@ const ProductUpdate = ({history, match }) => {
 
 
 
-    setSelectedCategory
 
     const { user } = useSelector((state) => ({ ...state }));
     // router

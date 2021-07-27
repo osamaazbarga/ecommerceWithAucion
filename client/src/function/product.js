@@ -45,3 +45,14 @@ export async function getProducts(sort,order,limit) {
     const req = await Api.post(`/products`,{sort,order,limit})
     return req
 }
+
+
+
+export async function productStar(productId,star,authtoken) {
+    const req = await Api.put(`/product/star/${productId}`,{star},{
+        headers:{
+            authtoken
+        }
+    })
+    return req
+}

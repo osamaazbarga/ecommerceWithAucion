@@ -1,37 +1,38 @@
-const Product=require('../models/product.model')
-const slugify=require('slugify')
+const Product = require('../models/product.model')
+const User = require('../models/user.model')
+const slugify = require('slugify')
 
-exports.create=async(req,res)=>{
+exports.create = async (req, res) => {
     try {
-        
-        req.body.slug=slugify(req.body.title)
-        const newProduct=await new Product(req.body).save()
+
+        req.body.slug = slugify(req.body.title)
+        const newProduct = await new Product(req.body).save()
         res.json(newProduct)
     } catch (err) {
         //res.status(400).send('Create product faild')
         res.status(400).json({
-            err:err.message,
+            err: err.message,
         })
     }
 }
 
-exports.listAll=async(req,res)=>{
-    let products=await Product.find({})
-    .limit(parseInt(req.params.count))
-    .populate("category")
-    .populate("subs")
-    .sort([['createdAt',"desc"]])
-    .exec()
+exports.listAll = async (req, res) => {
+    let products = await Product.find({})
+        .limit(parseInt(req.params.count))
+        .populate("category")
+        .populate("subs")
+        .sort([['createdAt', "desc"]])
+        .exec()
 
 
     res.json(products)
 }
 
-exports.remove=async(req,res)=>{
+exports.remove = async (req, res) => {
     try {
-        const deleted=await Product.findOneAndRemove({slug:req.params.slug}).exec();
+        const deleted = await Product.findOneAndRemove({ slug: req.params.slug }).exec();
         res.json(deleted)
-        
+
     } catch (err) {
         console.log(err);
         return res.status(400).send('Product Delete Failed')
@@ -39,51 +40,51 @@ exports.remove=async(req,res)=>{
 }
 
 
-exports.read=async(req,res)=>{
-    const product= await Product.findOne({slug:req.params.slug})
-    .populate('category')
-    .populate('subs')
-    .exec()
+exports.read = async (req, res) => {
+    const product = await Product.findOne({ slug: req.params.slug })
+        .populate('category')
+        .populate('subs')
+        .exec()
     res.json(product)
 
-    
+
 }
 
-exports.update=async(req,res)=>{
+exports.update = async (req, res) => {
     try {
         // const deleted=await Product.findOneAndRemove({slug:req.params.slug}).exec();
         // res.json(deleted)
-        if(req.body.title){
-            req.body.slug=slugify(req.body.title)
+        if (req.body.title) {
+            req.body.slug = slugify(req.body.title)
         }
-        const updated=await Product.findOneAndUpdate({slug:req.params.slug},req.body,{new:true}).exec()
+        const updated = await Product.findOneAndUpdate({ slug: req.params.slug }, req.body, { new: true }).exec()
         res.json(updated)
     } catch (err) {
-        console.log('product update ERROR======>',err);
+        console.log('product update ERROR======>', err);
         //return res.status(400).send('Product Update Failed')
         res.status(400).json({
-            err:err.message,
+            err: err.message,
         })
     }
 }
 
 //without pagination
-exports.list=async(req,res)=>{
+exports.list = async (req, res) => {
     try {
         //createAt/updateAt,desc/asc,3
-        const {sort,order,limit}=req.body
-        const products=await Product.find({})
-        .populate('category')
-        .populate('subs')
-        .sort([[sort,order]])
-        .limit(limit)
-        .exec()
+        const { sort, order, limit } = req.body
+        const products = await Product.find({})
+            .populate('category')
+            .populate('subs')
+            .sort([[sort, order]])
+            .limit(limit)
+            .exec()
         res.json(products)
 
     } catch (err) {
         console.log(err);
     }
-    
+
 }
 
 //with pagination
@@ -105,12 +106,50 @@ exports.list=async(req,res)=>{
 //     } catch (err) {
 //         console.log(err);
 //     }
-    
+
 // }
 
-exports.productsCount=async(req,res)=>{
-    let total=await Product.find({}).estimatedDocumentCount().exec()
+exports.productsCount = async (req, res) => {
+    let total = await Product.find({}).estimatedDocumentCount().exec()
     res.json(total)
+
+
+}
+
+
+
+exports.productStar = async (req, res) => {
+
+    const product = await Product.findById(req.params.productid).exec()
+    const user = await User.findOne({ email: req.user.email }).exec()
+    const { star } = req.body
+
+    //who is updating
+    //check if currntly logged in user have alerady added rating to this product?
+
+    let existingRatingObject = product.ratings.find((ele) =>{
+
+        (ele.postedBy.toString() === user._id.toString())
+    })
+    //if user haven't left rating yet ,push it
+    if(existingRatingObject===undefined){
+        let ratingAdded=await Product.findByIdAndUpdate(product._id,{
+            $push:{ratings:{star,postedBy:user._id}},
+        },{new:true}).exec()
+        console.log("ratingAdded",ratingAdded);
+        res.json(ratingAdded)
+
+
+    }else{
+        //if user have already left rating , update it
+        const ratingUpdated=await Product.updateOne({
+            rating:{$elemMatch:existingRatingObject},
+        }
+        ,{$set:{"ratings.$.star":star}},{new:true}
+        ).exec()
+        console.log(ratingUpdated);
+        res.json(ratingUpdated)
+    }
     
-    
+
 }
