@@ -56,3 +56,8 @@ export async function productStar(productId,star,authtoken) {
     })
     return req
 }
+
+export async function getRelated(productId) {
+    const req = await Api.get(`/product/Related/${productId}`)
+    return req
+}
