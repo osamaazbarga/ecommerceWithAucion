@@ -28,6 +28,9 @@ import ProductCreate from './pages/product/ProductCreate';
 import AllProducts from './pages/product/AllProducts';
 import ProductUpdate from './pages/product/ProductUpdate';
 import ProductView from './pages/ProductView';
+import CategoryHome from './pages/category/CategoryHome';
+import SubHome from './pages/sub/SubHome';
+import Shop from './pages/Shop';
 
 
 
@@ -83,6 +86,11 @@ function App() {
 
 
         <Route exact path="/product/:slug" component={ProductView}/>
+        <Route exact path="/category/:slug" component={CategoryHome}/>
+        <Route exact path="/sub/:slug" component={SubHome}/>
+        <Route exact path="/shop" component={Shop}/>
+
+
 
 
 

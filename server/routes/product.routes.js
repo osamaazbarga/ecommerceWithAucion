@@ -6,7 +6,18 @@ const router=express.Router()
 //middlewares
 const {authCheck,adminCheck}=require('../middleware/auth')
 //controller
-const {create,listAll,remove,read,update,list,productsCount,productStar,listRelated}=require('../controllers/product.controller')
+const {
+        create,
+        listAll,
+        remove,
+        read,
+        update,
+        list,
+        productsCount,
+        productStar,
+        listRelated,
+        searchFilters,
+    }=require('../controllers/product.controller')
 router.post('/product',authCheck, adminCheck,create)
 router.get('/products/total',productsCount)
 
@@ -22,16 +33,9 @@ router.put("/product/star/:productid",authCheck,productStar)
 
 //related
 router.get('/product/related/:productId',listRelated)
+//search
+router.post('/search/filters',searchFilters)
 
-
-
-
-
-
-
-
-
-    
 
 
 

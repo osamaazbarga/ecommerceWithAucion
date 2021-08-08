@@ -61,3 +61,9 @@ export async function getRelated(productId) {
     const req = await Api.get(`/product/Related/${productId}`)
     return req
 }
+
+
+export async function fetchProductsByFilter(arg) {
+    const req = await Api.post(`/search/filters`,arg)
+    return req
+}
