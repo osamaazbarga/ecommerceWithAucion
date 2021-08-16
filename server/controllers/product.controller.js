@@ -127,70 +127,210 @@ exports.productStar = async (req, res) => {
     //who is updating
     //check if currntly logged in user have alerady added rating to this product?
 
-    let existingRatingObject = product.ratings.find((ele) =>{
+    let existingRatingObject = product.ratings.find((ele) => {
         // console.log("user",ele.postedBy);
         // console.log("ele",ele.postedBy);
 
         return (ele.postedBy.toString() === user._id.toString())
     })
-    console.log("existingRatingObject",existingRatingObject);
+    console.log("existingRatingObject", existingRatingObject);
     //if user haven't left rating yet ,push it
-    if(existingRatingObject===undefined){
-        let ratingAdded=await Product.findByIdAndUpdate(product._id,{
-            $push:{ratings:{star,postedBy:user._id}},
-        },{new:true}).exec()
-        console.log("ratingAdded",ratingAdded);
+    if (existingRatingObject === undefined) {
+        let ratingAdded = await Product.findByIdAndUpdate(product._id, {
+            $push: { ratings: { star, postedBy: user._id } },
+        }, { new: true }).exec()
+        console.log("ratingAdded", ratingAdded);
         res.json(ratingAdded)
 
 
-    }else{
+    } else {
         //if user have already left rating , update it
         console.log(" i am here update ");
-        const ratingUpdated=await Product.updateOne({
-            ratings:{$elemMatch:existingRatingObject},
+        const ratingUpdated = await Product.updateOne({
+            ratings: { $elemMatch: existingRatingObject },
         }
-        ,{$set:{"ratings.$.star":star}},{new:true}
+            , { $set: { "ratings.$.star": star } }, { new: true }
         ).exec()
         console.log(ratingUpdated);
         res.json(ratingUpdated)
     }
-    
+
 
 }
 
 
 
-exports.listRelated=async(req,res)=>{
-    const product=await Product.findById(req.params.productId).exec()
-    const related= await Product.find({
-        _id:{$ne:product._id},
-        category:product.category,
+exports.listRelated = async (req, res) => {
+    const product = await Product.findById(req.params.productId).exec()
+    const related = await Product.find({
+        _id: { $ne: product._id },
+        category: product.category,
     })
-    .limit(3)
-    .populate('category')
-    .populate('subs')
-    // .populate('postedBy','-password')//wothoutpsassword
-    .populate('postedBy')
-    .exec()
+        .limit(3)
+        .populate('category')
+        .populate('subs')
+        // .populate('postedBy','-password')//wothoutpsassword
+        .populate('postedBy')
+        .exec()
     res.json(related)
 }
 
 //search/filter
 
-const handleQuery=async(req,res,query)=>{
-    const products=await Product.find({$text:{$search:query}})
-    .populate('category','_id name')
-    .populate('subs','_id name')
-    .populate('postedBy','_id name')
-    .exec()
-    console.log("products",products);
+const handleQuery = async (req, res, query) => {
+    const products = await Product.find({ $text: { $search: query } })
+        .populate('category', '_id name')
+        .populate('subs', '_id name')
+        .populate('postedBy', '_id name')
+        .exec()
+    console.log("products", products);
     res.json(products)
 }
 
-exports.searchFilters=async(req,res)=>{
-    const {query}=req.body
-    if(query){
-        console.log('query',query);
-        await handleQuery(req,res,query)
+const handlePrice = async (req, res, price) => {
+    try {
+        const products = await Product.find({
+            price: {
+                $gte: price[0],//bigger and equal to
+                $lte: price[1],//smaller and equal to
+            }
+        })
+        .populate('category', '_id name')
+        .populate('subs', '_id name')
+        .populate('postedBy', '_id name')
+        .exec()
+        res.json(products)
+    } catch (err) {
+        console.log(err);
     }
 }
+
+const handleCategory = async (req, res, category) => {
+    try {
+        const products = await Product.find({category})
+        .populate('category', '_id name')
+        .populate('subs', '_id name')
+        .populate('postedBy', '_id name')
+        .exec()
+        res.json(products)
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+const handleStar = async (req, res, stars) => {
+    Product.aggregate([
+        {
+            $project:{
+                document:"$$ROOT",
+                //title:"$title",
+                floorAverage:{
+                    $floor:{$avg:"$ratings.star"}//3.33->3
+                }
+            }
+        },
+
+        {
+            $match:{floorAverage:stars}
+        }
+    ])
+    .limit(12)
+    .exec((err,aggregates)=>{
+        if(err) console.log('AGGREGATE ERROR',err);
+        Product.find({_id:aggregates})
+        .populate('category', '_id name')
+        .populate('subs', '_id name')
+        .populate('postedBy', '_id name')
+        .exec((err,products)=>{
+            if(err) console.log('PRODUCT AGGREGATE ERROR',err);
+            res.json(products)
+        })
+    })
+
+}
+
+const handleSub=async(req, res, sub)=>{
+    const products = await Product.find({subs:sub})
+        .populate('category', '_id name')
+        .populate('subs', '_id name')
+        .populate('postedBy', '_id name')
+        .exec()
+        res.json(products)
+}
+
+
+
+const handleShipping=async(req, res, shipping)=>{
+    const products = await Product.find({shipping})
+        .populate('category', '_id name')
+        .populate('subs', '_id name')
+        .populate('postedBy', '_id name')
+        .exec()
+        res.json(products)
+}
+
+const handleColor=async(req, res, color)=>{
+    const products = await Product.find({color})
+        .populate('category', '_id name')
+        .populate('subs', '_id name')
+        .populate('postedBy', '_id name')
+        .exec()
+        res.json(products)
+}
+
+const handleBrand=async(req, res, brand)=>{
+    const products = await Product.find({brand})
+        .populate('category', '_id name')
+        .populate('subs', '_id name')
+        .populate('postedBy', '_id name')
+        .exec()
+        res.json(products)
+}
+
+exports.searchFilters = async (req, res) => {
+    const { query, price,category,stars,sub,shipping ,color,brand} = req.body
+    if (query) {
+        console.log('query', query);
+        await handleQuery(req, res, query)
+    }
+    //price[20,200]
+    if (price != undefined) {
+        console.log('price--->', price);
+        await handlePrice(req, res, price)
+
+    }
+
+    if(category){
+        console.log('category--->', category);
+        await handleCategory(req, res, category)
+    }
+
+    if(stars){
+        console.log('stars--->', stars);
+        await handleStar(req, res, stars)
+
+    }
+
+    if(sub){
+        console.log('sub--->', sub);
+        await handleSub(req, res, sub)
+    }
+
+    if(shipping){
+        console.log('shipping--->', shipping);
+        await handleShipping(req, res, shipping)
+    }
+
+    if(color){
+        console.log('color--->', color);
+        await handleColor(req, res, color)
+    }
+
+    if(brand){
+        console.log('brand--->', brand);
+        await handleBrand(req, res, brand)
+    }
+}
+
+
+

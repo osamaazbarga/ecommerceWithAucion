@@ -1,15 +1,52 @@
-import React from 'react'
-import { Card } from 'antd';
+import React ,{useState}from 'react'
+import { Card,Tooltip } from 'antd';
 import { EyeOutlined, ShoppingCartOutlined } from '@ant-design/icons'
 import defaultImage from '../../images/defaultimageproduct.png'
 import { Link } from 'react-router-dom'
 import { showAverage} from '../../function/rating'
+import _ from 'lodash'
+import {useSelector,useDispatch} from 'react-redux'
 
 const { Meta } = Card;
 
 const ProductCard = ({ product }) => {
     const { title, description, price, images, slug } = product
+    
+    const [tooltip,setTooltip]=useState('Click to add')
 
+    //redux
+    const {user,cart}=useSelector((state)=>({...state}))
+    const dispach=useDispatch()
+    
+    const handleAddToCart=()=>{
+        
+        //create cart array
+        let cart=[]
+        if(typeof(window)!='undefined'){
+            //if cart is in localstorage get it
+            if(localStorage.getItem('cart')){
+                cart=JSON.parse(localStorage.getItem('cart'))
+            }
+            //push new product to cart
+            cart.push({
+                ...product,
+                count:1,
+            })
+            //remove duplicates
+            let unique=_.uniqWith(cart,_.isEqual)
+            //save to localstorage
+            //console.log('unique',unique)
+            localStorage.setItem('cart',JSON.stringify(unique))
+            //show toolTip
+            setTooltip("Added")
+
+            //add to redux state
+            dispach({
+                type:"ADD_TO_CART",
+                payload:unique,
+            })
+        }
+    }
     return (
         <div>
             <div className="text-center pt-1 pb-3">
@@ -30,10 +67,12 @@ const ProductCard = ({ product }) => {
                     <Link to={`/product/${slug}`}><EyeOutlined className="text-warning" />
                         <br />View
                     </Link>,
-                    <div><ShoppingCartOutlined className="text-danger" /><br />Add to Cart</div>
+                    <Tooltip title={tooltip}>
+                        <div onClick={handleAddToCart}><ShoppingCartOutlined className="text-danger" /><br />Add to Cart</div>
+                    </Tooltip>,
                 ]}
             >
-                <Meta title={title} description={`${description && description.substring(0, 40)}...`} />
+                <Meta title={`${title} - $${price}`} description={`${description && description.substring(0, 40)}...`} />
 
             </Card>
         </div>
