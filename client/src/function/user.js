@@ -44,3 +44,12 @@ export async function saveUserAddress(authtoken,address) {
     })
     return req
 }
+
+export async function applyCoupon(authtoken,coupon) {
+    const req = await Api.post('/user/cart/coupon', { coupon }, {
+        headers: {
+            authtoken
+        }
+    })
+    return req
+}
