@@ -45,6 +45,13 @@ const ProductCard = ({ product }) => {
                 type:"ADD_TO_CART",
                 payload:unique,
             })
+
+            //show cart items in side drawer
+            dispach({
+                type:"SET_VISABLE",
+                payload:true,
+            })
+            
         }
     }
     return (

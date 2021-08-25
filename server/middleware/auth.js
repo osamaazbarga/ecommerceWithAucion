@@ -2,7 +2,7 @@ const admin=require('../firebase')
 const User=require('../models/user.model')
 
 exports.authCheck=async(req,res,next)=>{
-    console.log("headers",req.headers);
+    // console.log("headers",req.headers);
     try{
         const firebaseUser=await admin.auth().verifyIdToken(req.headers.authtoken)
         // console.log("FIREBASE USER IN AUTHCHECK",firebaseUser);

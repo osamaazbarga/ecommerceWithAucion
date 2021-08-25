@@ -17,3 +17,7 @@ code {
   object-fit: cover;
 
 }
+
+.pointer{
+  cursor: pointer;
+}

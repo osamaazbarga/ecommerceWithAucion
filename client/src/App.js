@@ -31,6 +31,10 @@ import ProductView from './pages/ProductView';
 import CategoryHome from './pages/category/CategoryHome';
 import SubHome from './pages/sub/SubHome';
 import Shop from './pages/Shop';
+import Cart from './pages/Cart';
+import SideDrawer from './components/drawer/SideDrawer';
+import Checkout from './pages/Checkout';
+import CreateCouponPage from './pages/admin/coupon/CreateCouponPage';
 
 
 
@@ -65,6 +69,7 @@ function App() {
   return (
     <div>
       <Header/>
+      <SideDrawer/>
       <ToastContainer/>
       <Switch>
         <Route exact path="/" component={Home}/>
@@ -89,10 +94,9 @@ function App() {
         <Route exact path="/category/:slug" component={CategoryHome}/>
         <Route exact path="/sub/:slug" component={SubHome}/>
         <Route exact path="/shop" component={Shop}/>
-
-
-
-
+        <Route exact path="/cart" component={Cart}/>
+        <UserRoute exact path="/checkout" component={Checkout}/>
+        <AdminRoute exact path="/admin/coupon" component={CreateCouponPage}/>
 
 
 
