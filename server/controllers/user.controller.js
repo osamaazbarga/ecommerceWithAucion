@@ -91,6 +91,8 @@ exports.applyCouponToUserCart=async(req,res)=>{
 
     //calculate the rotal after discount
     let totalAfterDiscount=(cartTotal-(cartTotal*validCoupon.discount)/100).toFixed(2)//99.98980--->99.98
-    Cart.findOneAndUpdate({orderedBy:user._id},{totalAfterDiscount}),{new:true}
+
+    console.log("------>",totalAfterDiscount)
+    Cart.findOneAndUpdate({orderedBy:user._id},{totalAfterDiscount},{new:true}).exec()
     res.json(totalAfterDiscount)
 }
