@@ -2,6 +2,8 @@ const User =require('../models/user.model')
 const Product =require('../models/product.model')
 const Cart =require('../models/cart.model')
 const Coupon =require('../models/coupon.model')
+const Order =require('../models/order.model')
+
 
 
 exports.userCart=async(req,res)=>{
@@ -96,3 +98,36 @@ exports.applyCouponToUserCart=async(req,res)=>{
     Cart.findOneAndUpdate({orderedBy:user._id},{totalAfterDiscount},{new:true}).exec()
     res.json(totalAfterDiscount)
 }
+
+exports.createOrder=async(req,res)=>{
+    const {paymentIntent}=req.body.stripeResponse;
+    const user=await User.findOne({email:req.user.email}).exec()
+    let {products}=await Cart.findOne({orderedBy:user._id}).exec()
+    let newOrder=await new Order({
+        products,
+        paymentIntent,
+        orderedBy:user._id
+    }).save()
+
+    //decrement quantity, increment sold
+    let bulkOption=products.map((item)=>{
+        return {
+            updateOne:{
+                filter:{_id:item.product._id},//important item.product
+                update:{$inc:{quantity:-item.count,sold:+item.count}}
+            }
+        }
+    })
+
+    let updated=await Product.bulkWrite(bulkOption,{})
+    console.log('PRODUCT QUANTITY -- AND SOLD ++',updated);
+
+    console.log("NEW ORDER SAVED",newOrder);
+    res.json({ok:true})
+}
+
+
+// exports.orders=async(req,res)=>{
+//     const user=await User.findOne({email:req.user.email}).exec()
+//     let userOrders=await
+// }
