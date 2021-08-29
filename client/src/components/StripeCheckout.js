@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { Card } from 'antd'
 import { DollarOutlined, CheckOutlined } from '@ant-design/icons'
 import DefaultImage from '../images/defaultimageproduct.png'
-
+import {createOrder,emptyUserCart} from '../function/user'
 const StripeCheckout = ({ history }) => {
     const dispatch = useDispatch()
     const { user, coupon } = useSelector((state) => ({ ...state }))
@@ -76,6 +76,27 @@ const StripeCheckout = ({ history }) => {
         } else {
             //here you got result after successful payment
             //create order and save in database for admin to process
+            createOrder(payload,user.token)
+            .then((res)=>{
+                if(res.data.ok){
+                    //empty cart from local storage
+                    if(typeof(window)!=='undefined'){
+                        localStorage.removeItem("cart")
+                    }
+                    //empty cart from redux
+                    dispatch({
+                        type:'ADD_TO_CART',
+                        payload:[]
+                    })
+                    //reset coupon to false
+                    dispatch({
+                        type:'COUPON_APPLIED',
+                        payload:false
+                    })
+                    //empty cart from database
+                    emptyUserCart(user.token);
+                }
+            })
             //empty user cart from redux store and local strage
             console.log(JSON.stringify(payload, null, 4));
             setError(null)

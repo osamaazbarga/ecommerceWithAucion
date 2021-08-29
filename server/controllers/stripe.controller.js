@@ -5,7 +5,7 @@ const Coupon=require('../models/coupon.model')
 const stripe=require('stripe')(process.env.STRIPE_SECRET)
 
 exports.createPaymentIntent=async(req,res)=>{
-    // console.log(req.body);
+    console.log(req.body);
     const {couponApplied}=req.body
 
     //1. find user
@@ -22,11 +22,13 @@ exports.createPaymentIntent=async(req,res)=>{
     }else {
         finalAmount=(cartTotal*100)
     }
+    console.log((finalAmount).toFixed(0));
     //create payment intent with order amount and currency
     const paymentIntent=await stripe.paymentIntents.create({
-        amount:finalAmount,
+        amount:(finalAmount).toFixed(0),
         currency:"usd"
     });
+    console.log("paymentIntent",paymentIntent,finalAmount);
 
     res.send({
         clientSecret:paymentIntent.client_secret,

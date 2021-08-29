@@ -53,3 +53,23 @@ export async function applyCoupon(authtoken,coupon) {
     })
     return req
 }
+
+export async function createOrder(stripeResponse,authtoken) {
+    const req = await Api.post('/user/order', { stripeResponse }, {
+        headers: {
+            authtoken
+        }
+    })
+    return req
+}
+
+export async function getUserOrders(authtoken) {
+    console.log("before");
+    const req = await Api.get('/user/orders', {
+        headers: {
+            authtoken
+        }
+    })
+    console.log(req);
+    return req
+}

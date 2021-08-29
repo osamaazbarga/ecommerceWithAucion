@@ -13,7 +13,7 @@ router.post('/user/address',authCheck,saveAddress)
 router.post('/user/cart/coupon',authCheck,applyCouponToUserCart)
 
 router.post('/user/order',authCheck,createOrder)
-router.get('/user/oreders',authCheck,orders)
+router.get('/user/orders',authCheck,orders)
 
 // router.get('/osa', (req, res) => {
 //     const user = 'Evg2rr2eni';
