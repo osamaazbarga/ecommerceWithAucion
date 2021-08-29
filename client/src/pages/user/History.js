@@ -5,6 +5,8 @@ import {useSelector,useDispatch} from 'react-redux'
 import {CheckCircleOutlined,CloseCircleOutlined} from '@ant-design/icons'
 import {toast} from 'react-toastify'
 import ShowPaymentInfo from '../../components/cards/ShowPaymentInfo'
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import Invoice from '../../components/order/Invoice'
 
 export const History = () => {
     const [oreders,setOreders]=useState([])
@@ -13,6 +15,8 @@ export const History = () => {
     useEffect(() => {
         loadUserOrders()
     }, [])
+
+    
 
     const loadUserOrders=()=>{
         getUserOrders(user.token)
@@ -53,6 +57,32 @@ export const History = () => {
         )
     }
 
+    const showDownloadLink=(order)=>{
+        return(
+            // <PDFDownloadLink 
+            //     document={
+            //         <Invoice order={order}/>
+            //     }
+            //     fileName="invoice.pdf"
+            //     className="btn btn-sm btn-block btn-outline-primary"
+
+            // >
+            //     Download PDF
+            // </PDFDownloadLink>
+            
+                <PDFDownloadLink
+                    document={
+                        <Invoice order={order}/>
+                    }
+                    fileName="invoice.pdf"
+                    className="btn btn-sm btn-block btn-outline-primary"
+                >
+                Download PDF
+                </PDFDownloadLink>
+            
+        )
+    }
+
     const showEachOrders=()=>{
         return oreders.map((order,i)=>{
             return(
@@ -61,7 +91,7 @@ export const History = () => {
                     {showOrderInTable(order)}
                     <div className="row">
                         <div className="col">
-                            <p>PDF Download</p>
+                            {showDownloadLink(order)}
                         </div>
                         
                     </div>
