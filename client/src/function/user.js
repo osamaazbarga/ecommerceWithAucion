@@ -64,12 +64,40 @@ export async function createOrder(stripeResponse,authtoken) {
 }
 
 export async function getUserOrders(authtoken) {
-    console.log("before");
+
     const req = await Api.get('/user/orders', {
         headers: {
             authtoken
         }
     })
-    console.log(req);
     return req
 }
+
+export async function getWishlist(authtoken) {
+    console.log("before");
+    const req = await Api.get('/user/wishlist', {
+        headers: {
+            authtoken
+        }
+    })
+    return req
+}
+
+export async function removeWishlist(productId,authtoken) {
+    const req = await Api.put(`/user/wishlist/${productId}`,{}, {
+        headers: {
+            authtoken
+        }
+    })
+    return req
+}
+
+export async function addToWishlist(productId,authtoken) {
+    const req = await Api.post('/user/wishlist',{productId}, {
+        headers: {
+            authtoken
+        }
+    })
+    return req
+}
+

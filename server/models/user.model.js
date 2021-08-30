@@ -20,8 +20,8 @@ const userShema=new mongoose.Schema({
     isActive:{
         type:Boolean,
         default:true,
-    }
-    // wishlist:[{type:ObjectId,ref:"Product"}],
+    },
+    wishlist:[{type:ObjectId,ref:"Product"}],
 },{ timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }})
 
 module.exports=mongoose.model('User',userShema)
