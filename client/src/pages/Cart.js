@@ -29,6 +29,23 @@ const Cart = ({history}) => {
         
     }
 
+    const saveCashOrderToDb=()=>{
+        dispach({
+            type:"COD",
+            payload:true
+        })
+        //console.log("cart",JSON.stringify(cart,null,4));
+        userCart(cart,user.token)
+        .then((res)=>{
+            console.log('CART POST RES',res);
+            if(res.data.ok){
+                history.push('/checkout')
+            }
+        })
+        .catch((err)=>{
+            console.log('cart save err',err);
+        })
+    }
     const showCartItem=()=>{
         return (
             <table className="table table-boardered">
@@ -85,7 +102,11 @@ const Cart = ({history}) => {
 
                     {
                         user?(
-                            <button onClick={saveOrderToDb} disabled={!cart.length} className="btn btn-sm btn-primary mt-2">Procced to Checkout</button>
+                            <div>
+                                <button onClick={saveOrderToDb} disabled={!cart.length} className="btn btn-sm btn-primary mt-2">Procced to Checkout</button>
+                                <br/>
+                                <button onClick={saveCashOrderToDb} disabled={!cart.length} className="btn btn-sm btn-warning mt-2">Pay Cash on Delivery</button>
+                            </div>
                         ):(
                             <button className="btn btn-sm btn-primary mt-2"><Link to={{pathname:"login",state:{from:"cart"}}}>Login to Checkout</Link></button>
 

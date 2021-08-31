@@ -8,7 +8,7 @@ import ShowPaymentInfo from '../../components/cards/ShowPaymentInfo'
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import Invoice from '../../components/order/Invoice'
 
-export const History = () => {
+const History = () => {
     const [oreders,setOreders]=useState([])
     const {user}=useSelector((state)=>({...state}))
 
@@ -84,7 +84,7 @@ export const History = () => {
     }
 
     const showEachOrders=()=>{
-        return oreders.map((order,i)=>{
+        return oreders.reverse().map((order,i)=>{
             return(
                 <div key={i} className="m-5 p-3 card">
                     <ShowPaymentInfo order={order}/>
@@ -112,3 +112,5 @@ export const History = () => {
         </div>
     )
 }
+
+export default History;

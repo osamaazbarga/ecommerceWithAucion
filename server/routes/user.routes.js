@@ -15,7 +15,8 @@ const {
         orders,
         addToWishlist,
         wishlist,
-        removeFromWishlist
+        removeFromWishlist,
+        createCashOrder
 
       }=require("../controllers/user.controller")
 router.post('/user/cart',authCheck,userCart)//save cart
@@ -23,7 +24,8 @@ router.get('/user/cart',authCheck,getUserCart)//get cart
 router.delete('/user/cart',authCheck,emptyCart)//empty cart
 router.post('/user/address',authCheck,saveAddress)
 
-router.post('/user/order',authCheck,createOrder)
+router.post('/user/order',authCheck,createOrder)//Stripe
+router.post('/user/cash-order',authCheck,createCashOrder)//COD
 router.get('/user/orders',authCheck,orders)
 
 //coupon

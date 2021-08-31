@@ -5,7 +5,7 @@ import {useSelector,useDispatch} from 'react-redux'
 import { Link } from 'react-router-dom'
 import {DeleteOutlined} from '@ant-design/icons'
 
-export const Wishlist = () => {
+const Wishlist = () => {
     const [wishlist,setWishlist]=useState([])
     const {user}=useSelector((state)=>({...state}))
 
@@ -46,3 +46,5 @@ export const Wishlist = () => {
         </div>
     )
 }
+
+export default Wishlist;

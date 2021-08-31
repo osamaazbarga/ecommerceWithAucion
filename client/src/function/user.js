@@ -101,3 +101,13 @@ export async function addToWishlist(productId,authtoken) {
     return req
 }
 
+
+export async function createCashOrderForUser(authtoken,COD,coupon) {
+    const req = await Api.post('/user/cash-order', { COD,couponApplied:coupon }, {
+        headers: {
+            authtoken
+        }
+    })
+    return req
+}
+

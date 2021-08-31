@@ -1,13 +1,15 @@
 import React,{useState,useEffect} from 'react'
 import {useSelector,useDispatch} from 'react-redux'
-import { applyCoupon,getUserCart ,emptyUserCart,saveUserAddress} from '../function/user' 
+import { applyCoupon,getUserCart ,saveUserAddress,createCashOrderForUser,emptyUserCart} from '../function/user' 
 import {toast} from 'react-toastify'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 
 const Checkout = ({history}) => {
     const dispach=useDispatch()
-    const {user}=useSelector((state)=>({...state}))
+    const {user,COD}=useSelector((state)=>({...state}))
+    const couponTrueOrFalse=useSelector((state)=>state.coupon)
+
     const [products,setProducts]=useState([])
     const [total,setTotal]=useState(0)
     const [address,setAddress]=useState("")
@@ -131,6 +133,46 @@ const Checkout = ({history}) => {
 
     }
 
+    const createCashOrder=()=>{
+        createCashOrderForUser(user.token,COD,couponTrueOrFalse)
+        .then((res)=>{
+            console.log('USER CADH ORDER CREATED RES',res);
+            //empty cart from redux, local storage, reset coupon, reset COD, redirect
+            if(res.data.ok){
+                //emprty localstorage
+                if(typeof(window)!=="undefined"){
+                    localStorage.removeItem('cart')
+                }
+
+                //empty redux cart
+                dispach({
+                    type:'ADD_TO_CART',
+                    payload:[]
+                })
+
+                //empty redux coupon
+                dispach({
+                    type:'COUPON_APPLIED',
+                    payload:false
+                })
+
+                //empty redux COD
+                dispach({
+                    type:'COD',
+                    payload:false
+                })
+
+                //empty cart from backend
+                emptyUserCart(user.token);
+
+                //redirect
+                setTimeout(()=>{
+                    history.push('/user/history')
+                },1000)
+            }
+        })
+    }
+
     return (
         <div className="row">
             <div className="col-md-6">
@@ -159,11 +201,17 @@ const Checkout = ({history}) => {
                 )}
                 <div className="row">
                     <div className="col-md-6">
-                        <button 
+                        {COD?(<button 
+                            disabled={!addressSaved||!products.length} 
+                            className="btn btn-primary"
+                            onClick={createCashOrder}
+                        >Place Order
+                        </button>):(<button 
                             disabled={!addressSaved||!products.length} 
                             className="btn btn-primary"
                             onClick={()=>history.push("/payment")}
-                        >Place Order</button>
+                        >Place Order
+                        </button>)}
                     </div>
 
                     <div className="col-md-6">

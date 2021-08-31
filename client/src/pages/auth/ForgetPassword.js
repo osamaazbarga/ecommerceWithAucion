@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 
 
-export const ForgetPassword = ({history}) => {
+const ForgetPassword = ({history}) => {
     const [email, setEmail] = useState('')
     const [loading, setLoading] = useState(false)
 
@@ -58,3 +58,5 @@ export const ForgetPassword = ({history}) => {
     )
 }
 
+
+export default ForgetPassword;

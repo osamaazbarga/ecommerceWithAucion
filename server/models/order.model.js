@@ -19,10 +19,11 @@ const orderSchema=new mongoose.Schema({
         default:'Not Processed',
         enum:[
             'Not Processed',
+            "Cash On Delivery",
             'Processing',
             'Dispatched',
             'Cancelled',
-            'Completed'
+            'Completed',
         ]
     },
     orderedBy:{type:ObjectId,ref:"User"},

@@ -5,7 +5,7 @@ import LoadingToRedirect from './LoadingToRedirect'
 import {currentAdmin} from '../../function/auth'
 
 
-export const AdminRoute = ({children,...rest}) => {
+const AdminRoute = ({children,...rest}) => {
     const [ok,setOk]=useState(false)
     const {user}=useSelector((state)=>({...state}))
     useEffect(() => {
@@ -25,3 +25,4 @@ export const AdminRoute = ({children,...rest}) => {
     
     return ok?(<Route {...rest}/>):(<div className="text-danger"><LoadingToRedirect/></div>)
 }
+export default AdminRoute;
