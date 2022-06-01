@@ -15,16 +15,20 @@ import { showAverage } from '../../function/rating';
 import {removeWishlist,getWishlist, addToWishlist} from '../../function/user'
 import { toast } from 'react-toastify';
 
-import { useHistory } from 'react-router';
+// import { useHistory } from 'react-router';
+
+import { useNavigate } from 'react-router-dom';
+
 
 const { TabPane } = Tabs
 
 const SingleProduct = ({ product, onStarClick, star }) => {
     const { title, images, slug, description, _id } = product
     const [tooltip,setTooltip]=useState('Click to add')
+    const navigate = useNavigate();
 
     //router
-    let history=useHistory()
+    // let history=useHistory()
 
     //redux
     const {user,cart}=useSelector((state)=>({...state}))
@@ -65,7 +69,8 @@ const SingleProduct = ({ product, onStarClick, star }) => {
         addToWishlist(product._id,user.token).then((res)=>{
             console.log('ADDED TO WISHLIST',res.data);
             toast.success('Added to wishlist')
-            history.push('/user/wishlist')
+            // history.push('/user/wishlist')
+            navigate('/user/wishlist');
         })
     }
 

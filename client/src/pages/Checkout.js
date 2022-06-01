@@ -4,12 +4,14 @@ import { applyCoupon,getUserCart ,saveUserAddress,createCashOrderForUser,emptyUs
 import {toast} from 'react-toastify'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
+import { useNavigate,useLocation } from 'react-router-dom';
+
 
 const Checkout = ({history}) => {
     const dispach=useDispatch()
     const {user,COD}=useSelector((state)=>({...state}))
     const couponTrueOrFalse=useSelector((state)=>state.coupon)
-
+    let navigate = useNavigate();
     const [products,setProducts]=useState([])
     const [total,setTotal]=useState(0)
     const [address,setAddress]=useState("")
@@ -167,7 +169,7 @@ const Checkout = ({history}) => {
 
                 //redirect
                 setTimeout(()=>{
-                    history.push('/user/history')
+                    navigate('/user/history')
                 },1000)
             }
         })
@@ -209,7 +211,7 @@ const Checkout = ({history}) => {
                         </button>):(<button 
                             disabled={!addressSaved||!products.length} 
                             className="btn btn-primary"
-                            onClick={()=>history.push("/payment")}
+                            onClick={()=>navigate("/payment")}
                         >Place Order
                         </button>)}
                     </div>

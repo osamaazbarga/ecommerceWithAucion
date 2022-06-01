@@ -3,18 +3,23 @@ import {auth} from '../../firbase'
 import { toast} from 'react-toastify'
 import { useDispatch } from "react-redux";
 import { createOrUpdateUser } from "../../function/auth";
+import { useNavigate,useLocation } from 'react-router-dom';
 
 
-const RegisterComplete = ({history}) => {
+const RegisterComplete = () => {
     const [email,setEmail]=useState('')
     const [password,setPassword]=useState('')
+    let navigate = useNavigate();
+    const { state } = useLocation();
+    const from = state?.from || "/";
     // const [email,setEmail]=useState('')
     // const { user } = useSelector((state) => ({ ...state }))
     let dispatch = useDispatch()
 
     useEffect(()=>{
         setEmail(window.localStorage.getItem("emailForRegistration"))
-    },[history])
+        console.log(email);
+    },[from])
     
 
     //props history
@@ -55,7 +60,7 @@ const RegisterComplete = ({history}) => {
                 })
                 .catch(err=>console.log(err));
                 //redirect
-                history.push('/')
+                navigate('/')
             }
         }
         catch(error){

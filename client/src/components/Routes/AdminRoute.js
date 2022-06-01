@@ -3,6 +3,8 @@ import {Route} from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import LoadingToRedirect from './LoadingToRedirect'
 import {currentAdmin} from '../../function/auth'
+import { Navigate, Outlet } from 'react-router-dom';
+
 
 
 const AdminRoute = ({children,...rest}) => {
@@ -23,6 +25,6 @@ const AdminRoute = ({children,...rest}) => {
 
     }, [user])
     
-    return ok?(<Route {...rest}/>):(<div className="text-danger"><LoadingToRedirect/></div>)
+    return ok?(<Outlet {...rest}/>):(<div className="text-danger"><LoadingToRedirect/></div>)
 }
 export default AdminRoute;

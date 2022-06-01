@@ -4,12 +4,17 @@ import {toast} from 'react-toastify'
 import {useSelector} from 'react-redux'
 import { StarOutlined } from '@ant-design/icons'
 import { useState } from 'react'
-import { useHistory,useParams } from 'react-router'
+// import { useHistory,useParams } from 'react-router'
+import { useParams } from 'react-router'
+
+
+import { useNavigate } from 'react-router-dom';
+
  
 const RatingModal = ({children}) => {
-    let history=useHistory()
+    // let history=useHistory()
     let {slug}=useParams()
-
+    const navigate = useNavigate();
     const {user}= useSelector(state => ({...state}))
     const [modalVisable,setModeVisable]=useState(false)
     const handleModal=()=>{
@@ -17,7 +22,7 @@ const RatingModal = ({children}) => {
             setModeVisable(true)
         }
         else{
-            history.push({
+            navigate({
                 pathname:'/login',
                 state:{from:`/product/${slug}`}
             })

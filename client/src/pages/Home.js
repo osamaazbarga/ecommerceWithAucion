@@ -12,7 +12,15 @@ const Home = () => {
             <div className="jumbotron text-danger h1 font-weight-bold text-center">
                 hi there
                 <Jumbotron text={['osama','azbarga']}/>
+                
             </div>
+            {/* {
+                fetch('https://www.hebcal.com/converter?cfg=json&gy=2011&gm=6&gd=2&g2h')
+                .then(response => response.json())
+                // .then(data => console.log(data));
+                // console.log('osama')
+            } */}
+            {/* <div>osama</div> */}
 
             <h4 className="text-center p-3 mt-5 mb-5 display-4 jumbotron">New Arrivals</h4>
             <NewArrivals/>
@@ -22,6 +30,7 @@ const Home = () => {
             <CategoryList/>
             <h4 className="text-center p-3 mt-5 mb-5 display-4 jumbotron">Sub Categories</h4>
             <SubList/>
+            
 
         </div>
 

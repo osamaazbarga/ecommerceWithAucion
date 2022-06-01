@@ -4,17 +4,25 @@ import {getProduct,productStar} from '../function/product'
 import { useSelector } from 'react-redux'
 import ProductCard from '../components/cards/ProductCard'
 import { getRelated } from '../function/product'
-const ProductView = ({match}) => {
+
+import { useParams } from 'react-router-dom';
+
+const ProductView = () => {
     const [product,setProduct]=useState({})
     const [related,setRelated]=useState([])
     const [star,setStar]=useState(0)
     //redux user
     const {user}=useSelector((state)=>({...state}))
-
-    const {slug}=match.params
+    const params = useParams();
+    const {slug}=params
     useEffect(() => {
         loadSingleProduct();
+        
     }, [slug])
+    // useEffect(() => {
+    //     console.log(slug);
+        
+    // })
 
     useEffect(() => {
         if (product.ratings && user) {

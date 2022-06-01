@@ -6,6 +6,8 @@
     float: right;
 }
 
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:regular,bold,italic&subset=latin,latin-ext');
+
 /* =====================================
 Template Name: Eshop
 Author Name: Naimur Rahman
@@ -813,7 +815,7 @@ Version:1.0
 }
 .header.shop .main-category li a i{
 	display:inline-block;
-	float:right;
+	/* float:right; */
 }
 .header.shop .sub-category {
 	background: #fff;
@@ -919,7 +921,7 @@ Version:1.0
 .header.shop .menu-origin {
 	float:none;
 	display: inline-block;
-	float: right;
+	/* float: right; */
 }
 .header.shop .nav li {
 	margin-right: 40px;
@@ -1030,7 +1032,7 @@ Version:1.0
 	padding: 0;
 	margin: 0;
 	top: 20px;
-	float: right;
+	/* float: right; */
 	position: relative;
 }
 .header.shop .right-bar .sinlge-bar.top-search a {
@@ -1149,7 +1151,7 @@ Version:1.0
 	width:100%;
 	z-index:999;
 }
-.header.sticky .all-category{}
+/* .header.sticky .all-category{} */
 .header.sticky .all-category h3{
 	cursor:pointer;
 	
@@ -1228,9 +1230,9 @@ Version:1.0
 	background-repeat: no-repeat;
     height: 510px;
 }
-.hero-slider .text-inner {
+/* .hero-slider .text-inner {
 	
-}
+} */
 .hero-slider .hero-text {
 	padding: 0 30px;
 	margin-top:100px;
@@ -4865,7 +4867,7 @@ Version:1.0
 .footer .about .logo{
 	margin-bottom:20px;
 }
-.footer .about .logo img{}
+/* .footer .about .logo img{} */
 .footer .about .text{
 	color:#fff;
 	font-weight: 400;
@@ -4883,7 +4885,7 @@ Version:1.0
 	font-size: 20px;
 	font-weight: 600;
 }
-.footer .links ul{}
+/* .footer .links ul{} */
 .footer .links ul li {
 	display: block;
 	margin-bottom: 8px;
@@ -4899,9 +4901,9 @@ Version:1.0
 	color:#F7941D;
 	padding-left:10px;
 }
-.footer .social{}
+/* .footer .social{}
 .footer .social .contact{}
-.footer .social .contact ul{}
+.footer .social .contact ul{} */
 .footer .social .contact ul li {
 	color: #fff;
 	display: block;
@@ -4951,37 +4953,3 @@ Version:1.0
 /*=============================
 	End Footer CSS
 ===============================*/
-
-.b-example-divider {
-	height: 3rem;
-	background-color: rgba(0, 0, 0, .1);
-	border: solid rgba(0, 0, 0, .15);
-	border-width: 1px 0;
-	box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-  }
-  
-  .form-control-dark {
-	color: #fff;
-	background-color: var(--bs-dark);
-	border-color: var(--bs-gray);
-  }
-  .form-control-dark:focus {
-	color: #fff;
-	background-color: var(--bs-dark);
-	border-color: #fff;
-	box-shadow: 0 0 0 .25rem rgba(255, 255, 255, .25);
-  }
-  
-  .bi {
-	vertical-align: -.125em;
-	fill: currentColor;
-  }
-  
-  .text-small {
-	font-size: 85%;
-  }
-  
-  .dropdown-toggle {
-	outline: 0;
-  }
-  

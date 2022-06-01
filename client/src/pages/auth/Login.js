@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate,useLocation } from 'react-router-dom';
 import { auth, googleAuthProvider } from "../../firbase";
 import { toast } from "react-toastify";
 import { Button } from "antd";
@@ -7,42 +8,68 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { createOrUpdateUser } from "../../function/auth";
 
-const Login = ({ history }) => {
+const Login = ( ) => {
     const [email, setEmail] = useState('o.s.2@hotmail.com')
     const [password, setPassword] = useState('315454199')
     const [loading, setLoading] = useState(false)
-
+    let navigate = useNavigate();
+    const { state } = useLocation();
+    const from = state?.from || "/";
     const { user } = useSelector((state) => ({ ...state }))
     useEffect(() => {
-        let intended=history.location.state
-        if(intended){
-            return;
-        }
-        else{
-            //console.log("login");
-            if (user && user.token) {
+        let intended=from
+        console.log(intended);
+        console.log(user);
+        // if(user){
+        //     return
+        // }
+        // else{
+        //     //console.log("login");
+        //     if (user && user.token) {
 
-                history.push('/')
-            }
+        //         navigate(from.pathname)
+        //     }
+        // }
+        if (user && user.token) {
+
+                    navigate(from.pathname||from)
         }
+                
         
-    }, [user,history])
+    }, [user,from])
+    // useEffect(() => {
+    //     // let intended=history.location.state
+    //     // if(intended){
+    //     //     return;
+    //     // }
+    //     // else{
+    //     //     //console.log("login");
+    //     //     if (user && user.token) {
+
+    //     //         history.push('/')
+    //     //     }
+    //     // }
+    //     console.log(from);
+        
+    // }, [user])
 
 
     let dispatch = useDispatch()
 
     const roleBasedRedirect=(res)=>{
 
-        let intended=history.location.state
+        // let intended=history.location.state
+        let intended=state
+
         if(intended){
-            history.push(intended.from)
+            navigate(intended.pathname||from)
         }
         else{
             if(res.data.role==='admin'){
-                history.push("/admin/dashboard")
+                navigate("/admin/dashboard")
             }
             else{
-                history.push("/user/history")
+                navigate("/user/history")
             }
         }
         

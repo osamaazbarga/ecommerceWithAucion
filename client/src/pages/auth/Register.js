@@ -2,17 +2,20 @@ import React,{useState,useEffect} from 'react'
 import {auth} from '../../firbase'
 import { toast} from 'react-toastify'
 import { useSelector } from 'react-redux';
+import { useNavigate,useLocation } from 'react-router-dom';
 
 
-
-const Register = ({history}) => {
+const Register = () => {
     const [email,setEmail]=useState('')
     const {user}=useSelector((state)=>({...state}))
+    let navigate = useNavigate();
+    const { state } = useLocation();
+    // const from = state?.from || "/";
     useEffect(()=>{
         if(user && user.token){
-            history.push('/')
+            navigate('/')
         }
-    },[user,history])
+    },[user,state])
 
     const handleSubmit=async(e)=>{
         console.log(e);

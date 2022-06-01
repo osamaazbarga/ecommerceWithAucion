@@ -1,10 +1,9 @@
-.float-nav{
-    position: absolute;
-    top: 50px;
-    right: 0px;
-    color: red;
-    float: right;
+.topbar {
+	background-color: #fff;
+	border-bottom: 1px solid #e2e2e2;
+	padding: 15px 0;
 }
+
 
 /* =====================================
 Template Name: Eshop
@@ -386,9 +385,9 @@ Version:1.0
 	color: #F7941D;
 }
 /* Topbar Left Nav */
-/* .header.shop .left-nav{
+.header.shop .left-nav{
 	
-} */
+}
 .header.shop .top-left .list-main li:first-child{
 	padding-left:0;
 }
@@ -698,7 +697,7 @@ Version:1.0
 }
 .header.shop .search-bar form {
 	display: inline-block;
-	/* float: left; */
+	float: left;
 	width: 260px;
 }
 .header.shop .search-bar input {
@@ -4951,37 +4950,3 @@ Version:1.0
 /*=============================
 	End Footer CSS
 ===============================*/
-
-.b-example-divider {
-	height: 3rem;
-	background-color: rgba(0, 0, 0, .1);
-	border: solid rgba(0, 0, 0, .15);
-	border-width: 1px 0;
-	box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-  }
-  
-  .form-control-dark {
-	color: #fff;
-	background-color: var(--bs-dark);
-	border-color: var(--bs-gray);
-  }
-  .form-control-dark:focus {
-	color: #fff;
-	background-color: var(--bs-dark);
-	border-color: #fff;
-	box-shadow: 0 0 0 .25rem rgba(255, 255, 255, .25);
-  }
-  
-  .bi {
-	vertical-align: -.125em;
-	fill: currentColor;
-  }
-  
-  .text-small {
-	font-size: 85%;
-  }
-  
-  .dropdown-toggle {
-	outline: 0;
-  }
-  

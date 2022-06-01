@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import ProductCartInCheckout from '../components/cards/ProductCartInCheckout'
 import {userCart}from '../function/user'
+import { useNavigate,useLocation } from 'react-router-dom';
 
 const Cart = ({history}) => {
     const { cart, user } = useSelector((state) => ({ ...state }))
     const dispach = useDispatch()
-
+    let navigate = useNavigate();
     const getTotal=()=>{
         return cart.reduce((currentValue,nextValue)=>{
             return currentValue+nextValue.count*nextValue.price
@@ -20,7 +21,7 @@ const Cart = ({history}) => {
         .then((res)=>{
             console.log('CART POST RES',res);
             if(res.data.ok){
-                history.push('/checkout')
+                navigate('/checkout')
             }
         })
         .catch((err)=>{
@@ -39,7 +40,7 @@ const Cart = ({history}) => {
         .then((res)=>{
             console.log('CART POST RES',res);
             if(res.data.ok){
-                history.push('/checkout')
+                navigate('/checkout')
             }
         })
         .catch((err)=>{
