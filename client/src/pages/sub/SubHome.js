@@ -2,10 +2,14 @@ import React ,{useState,useEffect}from 'react'
 import {getSub} from '../../function/subCategory'
 import {Link} from 'react-router-dom'
 import ProductCard from '../../components/cards/ProductCard'
-const SubHome = ({match}) => {
+import { useParams } from 'react-router-dom';
+const SubHome = () => {
     const [sub,setSub]=useState({})
     const [products,setProducts]=useState([])
     const [loading,setLoading]=useState(false)
+
+    const params = useParams();
+    const {slug}=params
 
     useEffect(() => {
         setLoading(true)
@@ -17,7 +21,6 @@ const SubHome = ({match}) => {
         })
     }, [])
 
-    const {slug}=match.params
 
     return (
         <div className="container">

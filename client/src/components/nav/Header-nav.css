@@ -1,0 +1,97 @@
+header{
+    background-color: rgba(255, 255, 255, 0.3);
+
+}
+
+.desktop-display{
+	/* visibility: hidden; */
+    display: block;
+
+}
+
+.search-div1{
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    background-color: rgba(223, 103, 103, 0.3);
+    width: 100%;
+    height: 100px;
+}
+
+.fone-display{
+    display: none!important;
+}
+
+.banner-div{
+    width: 100%;
+    height: 1000px;
+    
+}
+
+
+
+.first-div{
+    background-image: url("./images/artura3.jpg");
+    /* background-position: center; */
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: white;
+}
+
+/* @media only screen and (max-width: 600px) {
+    .desktop-display{
+        /* visibility: hidden; */
+        /* display: none!important;
+        
+    
+    }
+    
+    .fone-display{
+        display: block;
+    }
+  } */ 
+
+  @media only screen and (max-width: 600px) {
+    .desktop-display{
+        /* visibility: hidden; */
+        display: none!important;
+        
+    
+    }
+    
+    .fone-display{
+        display: block!important;
+        margin: auto;
+    }
+    .left-nav-css{
+        justify-content: center;
+    }
+    .search-div{
+        width: 100%;
+        margin-right: 120px;
+        justify-content: center;
+        text-align: center;
+    }
+    .link-div{
+        margin: auto;
+    }
+    .search-span{
+        margin: 0 auto;
+        justify-content: center;
+        text-align: center;
+        
+    }
+    .banner-div{
+        width: 100%;
+        height: 200px;
+    }
+
+    .search-div1{
+        display: flex;
+        justify-content: center;
+        justify-items: center;
+        background-color: none;
+        width: 100%;
+        height: 0;
+    }
+}

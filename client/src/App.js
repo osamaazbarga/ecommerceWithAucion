@@ -10,6 +10,7 @@ import {auth} from './firbase'
 import {useDispatch} from 'react-redux'
 import {currentUser} from './function/auth'
 import { LoadingOutlined } from '@ant-design/icons';
+import FooterBar from './components/footer/FooterBar';
 
 
 // import Login from './pages/auth/Login';
@@ -169,8 +170,7 @@ function App() {
         <AdminRoute exact path="/admin/coupon" element={<CreateCouponPage/>}/>
         <UserRoute exact path="/payment" element={<Payment/>}/> */}
       </Routes>
-
- 
+      <FooterBar/>
         
 
 

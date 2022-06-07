@@ -2,10 +2,14 @@ import React ,{useState,useEffect}from 'react'
 import {getCategory} from '../../function/category'
 import {Link} from 'react-router-dom'
 import ProductCard from '../../components/cards/ProductCard'
-const CategoryHome = ({match}) => {
+import { useParams } from 'react-router-dom';
+
+const CategoryHome = ({}) => {
     const [category,setCategory]=useState({})
     const [products,setProducts]=useState([])
     const [loading,setLoading]=useState(false)
+    const params = useParams();
+    const {slug}=params
 
     useEffect(() => {
         setLoading(true)
@@ -17,7 +21,7 @@ const CategoryHome = ({match}) => {
         })
     }, [])
 
-    const {slug}=match.params
+    // const {slug}=match.params
 
     return (
         <div className="container">
