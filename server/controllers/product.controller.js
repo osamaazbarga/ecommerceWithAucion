@@ -3,10 +3,12 @@ const User = require('../models/user.model')
 const slugify = require('slugify')
 
 exports.create = async (req, res) => {
+    console.log('req.body',req.body);
     try {
 
         req.body.slug = slugify(req.body.title)
         const newProduct = await new Product(req.body).save()
+        console.log("req.body try",req.body);
         res.json(newProduct)
     } catch (err) {
         //res.status(400).send('Create product faild')

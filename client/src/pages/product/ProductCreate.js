@@ -28,6 +28,8 @@ const ProductCreate = () => {
     const [values,setValues]=useState(initialState)
     const [subOptions,setSubOptions]=useState([])
     const [showSub,setShowSub]=useState(false)
+    const [formColors,setFormColors]=useState([{colorName:"",colorCode:"",quantity:0,size:""}])
+    const [checked,setChecked]=useState(false)
 
 
     //redux
@@ -43,15 +45,20 @@ const ProductCreate = () => {
         getCategories()
         .then(c=>setValues({...values,categories:c.data}))
     }
+    
+
 
     const handleSubmit=(e)=>{
         e.preventDefault()
-        console.log(values);
-        createProduct(values,user.token)
+        // console.log(formColors);
+        setValues({...values,checked,formColors})
+        console.log({...values,checked,formColors});
+        createProduct({...values,checked,formColors},user.token)
         .then(res=>{
-            console.log(res);
-            window.alert(`"${res.data.title}" is created`)
-            window.location.reload()
+            console.log('res',res);
+            // window.alert(`"${res.data.title}" is created`)
+            window.alert(`"${{values,formColors}}" is created`)
+            // window.location.reload()
         })
         .catch(err=>{
             console.log(err);
@@ -97,6 +104,10 @@ const ProductCreate = () => {
                         handleCategoryChange={handleCategoryChange}
                         subOptions={subOptions}
                         showSub={showSub}
+                        formColors={formColors}
+                        setFormColors={setFormColors}
+                        checked={checked}
+                        setChecked={setChecked}
                     />
 
                     

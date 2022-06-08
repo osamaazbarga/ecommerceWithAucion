@@ -59,7 +59,13 @@ const productSchema=new mongoose.Schema({
     ratings:[{
         star:Number,
         postedBy:{type:ObjectId,ref:'User'}
-    }]
+    }],
+    formColors:{
+        type:Array
+    },
+    checked:{
+        type:Boolean
+    }
 },{timestamps:true})
 
 module.exports=mongoose.model('Product',productSchema)

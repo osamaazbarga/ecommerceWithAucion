@@ -1,0 +1,16 @@
+.color-button {
+    /* width: 200px;
+    height: 200px; */
+    width: 3rem;
+    height: 3rem;
+    border: none;
+    border-radius: 50%;
+    outline: none;
+    background: gray;
+    color: white; 
+    cursor: pointer;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+  }
+  .color-button:hover {
+    background: #eb2f06;
+  }

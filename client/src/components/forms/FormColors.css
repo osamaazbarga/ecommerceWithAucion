@@ -1,0 +1,106 @@
+/* .App {
+    width: 70vh;
+    margin: 5rem auto;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .form-field {
+    flex: 2;
+  }
+  .output {
+    margin-left: 3rem;
+    flex: 1;
+  }
+  .form-field label,
+  h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+    color: rgb(84, 84, 84);
+  }
+  
+  input {
+    height: 35px;
+    width: 100%;
+    padding: 7px;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid rgb(220, 220, 220);
+  }
+  
+  input:focus {
+    border: 1px solid rgb(0, 208, 255);
+  }
+  
+  .services {
+    display: flex;
+    justify-content: space-between;
+  }
+  .first-division {
+    display: flex;
+    flex-direction: column;
+    margin: 0 5px 0.5rem 0;
+    width: 100%;
+  }
+  button {
+    background: none;
+    outline: none;
+    cursor: pointer;
+    font-weight: 500;
+    border-radius: 2px;
+    padding: 5px 10px;
+  }
+  .first-division button {
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    margin-top: 0.5rem;
+    color: rgb(0, 208, 255);
+    border: 1px solid rgb(0, 208, 255);
+  }
+  
+  .second-division button {
+    color: red;
+    border: 1px solid red;
+  }
+
+  .form-inline {  
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+  }
+
+  .form-inline label {
+    margin: 5px 10px 5px 0;
+  }
+
+  .form-inline input {
+    vertical-align: middle;
+    margin: 5px 10px 5px 0;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+  }
+
+  .button-section {
+    margin: 3%;
+  }
+  .button {
+    padding: 10px 20px;
+    background-color: dodgerblue;
+    border: 1px solid #ddd;
+    color: white;
+    cursor: pointer;
+  }
+
+  .button:hover {
+    background-color: royalblue;
+  }
+
+  .remove {
+    background-color: rgb(192, 53, 53);
+  }
+  .remove:hover {
+    background-color: rgb(187, 43, 43);
+  } */

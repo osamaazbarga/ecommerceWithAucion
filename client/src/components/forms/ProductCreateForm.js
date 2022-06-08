@@ -1,13 +1,20 @@
 import React,{useState} from 'react'
+import "bootstrap/dist/css/bootstrap.min.css"; 
+import "@popperjs/core"; 
+import "bootstrap";
+
 import FileUpload from './FileUpload'
 import {LoadingOutlined} from '@ant-design/icons'
 import { Select } from 'antd'
+import "../forms/CategoryForm"
 const { Option } = Select
 
 
-const ProductCreateForm = ({ handleSubmit, handleChange, values, handleCategoryChange, subOptions, showSub, setValues }) => {
+const ProductCreateForm = ({ handleSubmit, handleChange, values, handleCategoryChange, subOptions, showSub, setValues ,formColors,setFormColors,checked,setChecked}) => {
     //destructure
+    // const [formColors,setFormColors]=useState([{colorName:"",colorCode:"",quantity:0,size:""}])
     const [loading,setLoading]=useState(false)
+
     const {
         title,
         description,
@@ -20,10 +27,73 @@ const ProductCreateForm = ({ handleSubmit, handleChange, values, handleCategoryC
         colors,
         color,
         brand,
-        shipping
+        shipping,
     } = values
+
+    let handleChangeColor = (i, e) => {
+        let newFormColors = [...formColors];
+        newFormColors[i][e.target.name] = e.target.value;
+        setFormColors(newFormColors);
+        let sum = 0;
+
+        formColors.forEach(element => {
+            sum += Number(element.quantity);
+        });
+
+        console.log(sum);
+        setValues({ ...values, quantity: sum })
+     }
+        
+    let addFormFields = () => {
+        setFormColors([...formColors, {colorName:"",colorCode:"",quantity:null,size:""}])
+     }
+    
+    let removeFormFields = (i) => {
+        let newFormColors = [...formColors];
+        newFormColors.splice(i, 1);
+        setFormColors(newFormColors)
+    }
+
+    let handleSubmitColor = (event) => {
+        event.preventDefault();
+        alert(JSON.stringify(formColors));
+    }
+
+    let viewColorFields=()=>{
+
+        if (checked == true){
+            // text.style.display = "block";
+            setChecked(false)
+          } else {
+            setChecked(true)
+
+          }
+    }
+
+    let summaryQuantity=()=>{
+        let sum = 0;
+
+        formColors.forEach(element => {
+            sum += Number(element.quantity);
+        });
+
+        console.log(sum);
+        setValues({ ...values, quantity: sum })
+    }
+
+    let handlePrint=()=>{
+        summaryQuantity()
+        console.log(quantity);
+    }
+
+
+    
+
+   
     return (
         <form onSubmit={handleSubmit}>
+            
+
             <div className="form-group">
                 <label>Title</label>
                 <input
@@ -62,7 +132,94 @@ const ProductCreateForm = ({ handleSubmit, handleChange, values, handleCategoryC
                 </select>
             </div>
 
-            <div className="form-group">
+            
+            
+             
+            {/* <form className="App" autoComplete="off">
+            <div className="form-field">
+          {formColors.map((element, index) => (
+            <div className='form-inline' key={index}>
+              <label htmlFor='colorName'>Color Name</label>
+              <input name='colorName' id='colorName' type="text" className="form-control"  value={element.colorName} onChange={e => handleChangeColor(index, e)} />
+              <label htmlFor='colorCode'>Color Code</label>
+              <input type="text" id='colorCode' className="form-control" name="colorCode" value={element.colorCode || ""} onChange={e => handleChangeColor(index, e)} />
+              <label htmlFor='quantity'>Color Quality</label>
+              <input type="number" id='quantity' className="form-control" name="quantity" value={element.quantity || ""} onChange={e => handleChangeColor(index, e)} />
+              <label htmlFor='size'>Quality Size</label>
+              <input type="text" id='size' className="form-control" name="size" value={element.size || ""} onChange={e => handleChangeColor(index, e)} />
+              {
+                index ? 
+                  <button type="button"  className="button remove" onClick={() => removeFormFields(index)}>Remove</button> 
+                : null
+              }
+              <div className="btn-box">
+            {formColors.length !== 1 && <button
+              className="mr10"
+              onClick={() => removeFormFields(index)}>Remove</button>}
+            {formColors.length - 1 === index && <button onClick={addFormFields}>Add</button>}
+          </div>
+            </div>
+            
+          ))}
+          <div className="button-section">
+              <button className="button add" type="button" onClick={() => addFormFields()}>Add</button>
+              <button className="button submit" type="submit">Submit</button>
+          </div>
+        </div>
+        <div style={{ marginTop: 20 }}>{JSON.stringify(formColors)}</div>
+      </form> */}
+
+
+
+      {/* <div style={{ marginTop: 20 }}>{JSON.stringify(inputList)}</div> */}
+      <div className="form-check">
+            <input className="form-check-input" type="checkbox" defaultChecked={checked} onChange={viewColorFields} name="checked" id="flexCheckDefault"/>
+            <label className="form-check-label">
+                Add By Color And Size
+            </label>
+      </div>
+      <br/>
+            {
+                checked?
+                <form  className="App form-group" autoComplete="off">
+                <div className="form-field">
+              {formColors.map((element, index) => (
+                <div className='form-inline' key={index}>
+                  <label htmlFor='colorName'>Color Name</label>
+                  <input name='colorName' id='colorName' type="text" className="form-control"  value={element.colorName} onChange={e => handleChangeColor(index, e)} />
+                  <label htmlFor='colorCode'>Color Code</label>
+                  <input type="text" id='colorCode' className="form-control" name="colorCode" value={element.colorCode || ""} onChange={e => handleChangeColor(index, e)} />
+                  <label htmlFor='quantity'>Color Quality</label>
+                  <input type="number" id='quantity' className="form-control" name="quantity" value={element.quantity || ""} onChange={e => handleChangeColor(index, e)} />
+                  <label htmlFor='size'>Quality Size</label>
+                  <input type="text" id='size' className="form-control" name="size" value={element.size || ""} onChange={e => handleChangeColor(index, e)} />
+                  {/* {
+                    index ? 
+                      <button type="button"  className="button remove" onClick={() => removeFormFields(index)}>Remove</button> 
+                    : null
+                  } */}
+                  {/* <div className="btn-box"> */}
+                {formColors.length !== 1 && <button 
+                    type="button"
+                  className="mr10 btn btn-danger"
+                  onClick={() => removeFormFields(index)}>Remove</button>}
+                {formColors.length - 1 === index && <button className='btn btn-primary' onClick={addFormFields}>Add</button>}
+              </div>
+                // </div>
+
+              
+                
+              ))}
+              {/* <div className="button-section">
+                  <button className="button add" type="button" onClick={() => addFormFields()}>Add</button>
+                  <button className="button submit" type="submit">Submit</button>
+              </div> */}
+            </div>
+            <div style={{ marginTop: 20 }}>{JSON.stringify(formColors)}</div>
+          </form>
+          
+                    :
+                    <div className="form-group">
                 <label>Quantity</label>
                 <input
                     type="number"
@@ -71,6 +228,24 @@ const ProductCreateForm = ({ handleSubmit, handleChange, values, handleCategoryC
                     value={quantity}
                     onChange={handleChange} />
             </div>
+                
+            }
+      
+            {/* <div className="form-group">
+                <label>Quantity</label>
+                <input
+                    type="number"
+                    name="quantity"
+                    className="form-control"
+                    value={quantity}
+                    onChange={handleChange} />
+            </div> */}
+            <div className="form-group">
+                <div>total Quantity:<b>{quantity}</b></div>
+            </div>
+
+
+
 
             <div className="form-group">
                 <label>Color</label>
@@ -125,7 +300,7 @@ const ProductCreateForm = ({ handleSubmit, handleChange, values, handleCategoryC
                 </div>
             }
 
-            <div classNa="p-3">
+            <div className="p-3">
                 <FileUpload values={values} setValues={setValues}/>
             </div>
             <br />

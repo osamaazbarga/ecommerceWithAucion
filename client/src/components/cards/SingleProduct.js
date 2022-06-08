@@ -18,6 +18,7 @@ import { toast } from 'react-toastify';
 // import { useHistory } from 'react-router';
 
 import { useNavigate } from 'react-router-dom';
+import SideDrawer from '../drawer/SideDrawer';
 
 
 const { TabPane } = Tabs

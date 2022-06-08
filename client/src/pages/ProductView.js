@@ -49,6 +49,7 @@ const ProductView = () => {
     const loadSingleProduct=()=>{
         getProduct(slug)
         .then((res)=>{
+            console.log(res.data);
             setProduct(res.data)
             //load related
             getRelated(res.data._id)
@@ -69,7 +70,7 @@ const ProductView = () => {
     }
     return (
         <div className="container">
-
+            
             <SingleProduct product={product} onStarClick={onStarClick} star={star}/>
             <div className="row">
                 <div className="col text-center pt-5 pb-5">
