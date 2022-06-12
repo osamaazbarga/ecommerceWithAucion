@@ -11,6 +11,7 @@ import {useDispatch} from 'react-redux'
 import {currentUser} from './function/auth'
 import { LoadingOutlined } from '@ant-design/icons';
 import FooterBar from './components/footer/FooterBar';
+// import Admin from './components/Routes/Admin';
 
 
 // import Login from './pages/auth/Login';
@@ -117,8 +118,10 @@ function App() {
       <SideDrawer/>
       <ToastContainer/>
       
+      {/* <Admin/> */}
       {/* <Switch> */}
       <Routes>
+        {/* <Header/> */}
          {/* <Route exact path="/" com={Home}/> */}
          <Route exact path="/" element={<Home/>}/>
         
@@ -139,7 +142,9 @@ function App() {
         {/* <UserRoute exact path="/user/history" element={<History/>}/>
          <UserRoute exact path="/user/password" element={<Password/>}/>
         <UserRoute exact path="/user/wishlist" element={<Wishlist/>}/>*/}
+        
 
+        {/* Here */}
         <Route exact path="/" element={<AdminRoute/>}>
             <Route exact path="/admin/dashboard" element={<AdminDashboard/>}/>
             <Route exact path="/admin/category" element={<CategoryCreate/>}/>
@@ -151,14 +156,15 @@ function App() {
             <Route exact path="/admin/product/:slug" element={<ProductUpdate/>}/>
             <Route exact path="/admin/coupon" element={<CreateCouponPage/>}/>
         </Route>
-        {/*<AdminRoute exact path="/admin/dashboard" element={<AdminDashboard/>}/>
+        {/* Here */}
+        {/* <AdminRoute exact path="/admin/dashboard" element={<AdminDashboard/>}/>
         <AdminRoute exact path="/admin/category" element={<CategoryCreate/>}/>
         <AdminRoute exact path="/admin/category/:slug" element={<CategoryUpdate/>}/>
         <AdminRoute exact path="/admin/sub" element={<SubCreate/>}/>
         <AdminRoute exact path="/admin/sub/:slug" element={<SubUpdate/>}/>
         <AdminRoute exact path="/admin/product" element={<ProductCreate/>}/>
         <AdminRoute exact path="/admin/products" element={<AllProducts/>}/>
-        <AdminRoute exact path="/admin/product/:slug" element={<ProductUpdate/>}/>*/}
+        <AdminRoute exact path="/admin/product/:slug" element={<ProductUpdate/>}/> */}
 
 
         <Route exact path="/product/:slug" element={<ProductView/>}/>
@@ -169,7 +175,9 @@ function App() {
         {/*<UserRoute exact path="/checkout" element={<Checkout/>}/>
         <AdminRoute exact path="/admin/coupon" element={<CreateCouponPage/>}/>
         <UserRoute exact path="/payment" element={<Payment/>}/> */}
+        {/* <FooterBar/> */}
       </Routes>
+      
       <FooterBar/>
         
 
